@@ -24,13 +24,3 @@ Los obstáculos se pueden poner en el editor de unity, pero si los pueden poner 
 
 El agente se moverá entre N puntos en la escena (Waypoints), de manera cíclica. Los waypoints en la escena deben poderse poner y quitar durante el juego, y mostrar el orden en que el agente los visitará. Poder poner y quitar waypoints con el mouse. Al llegar cerca del waypoint actual, el agente debe cambiar al siguiente en el orden. Al visitar el "último" waypoint, debe dirigirse hacia el primero, y repetir todo el ciclo. Si ya no hay waypoints, el agente debe frenar hasta quedar quieto.
 
-El formato de entrega debe ser el siguiente:
-
-    Subir su proyecto de la clase a un repositorio de GitHub y enviarme la liga al someter la tarea.
-    Asegurarse de no subir la carpeta de Library de su proyecto de Unity, recuerden que trae archivos que estorban. Más tarde les incluyo las instrucciones para excluirlo de su Git si ya lo habían subido.
-    Cada comportamiento del examen debe ir en su propia escena, nombrada como "Examen1_" + Sigilo/Obstaculo/Patrullage, según corresponda, y en la cual debe estar listo para realizar el comportamiento de en cuestión al dar play. Quitar u ocultar los elementos que estén de más.
-    Usar rigidbodies como lo hicimos en clase.
-    Debe mostrar información visual útil para verificar cada comportamiento. Puede ser a través de Gizmos para verlo en la vista de escena, o a través de gameObjects en la vista de juego (o ambos, según consideren apropiado). También pueden cambiar el color de los objetos para indicar cambios de estado de un agente (por ejemplo, si está normal que sea color azul, si está en alerta, que sea color naranja, y si está en estado de ataque, que sea color rojo). 5.1: Mostrar visualmente cosas importantes para entender el "razonamiento" del agente: ->Líneas de velocidad, velocidad deseada, fuerza actual, mostrar los radios y áreas importantes, ->mostrar cambios de estado (por ejemplo, en el de "stealth/infiltración", que cambie de color el agente cuando cambie de estado (estados posibles: normal, alerta, ataque))
-    El examen consiste en hacer 2 de los 3 ejercicios, específicamente, el de Sigilo (60 puntos) y el de Obstáculo (50 puntos), sin embargo, el de Patrullage les puede dar hasta 30 puntos extra, por lo que les recomiendo ampliamente hagan su mejor esfuerzo con los 3 ejercicios para garantizar la mejor calificación.
-    Cuando entreguen su tarea, favor de mandarme un mensaje en la tarea para que me llegue notificación al correo. Lo mismo cuando les mande retroalimentación y hagan sus correcciones, para saber cuáles correcciones hicieron y poder evaluarlos mejor y más rápido.
-
