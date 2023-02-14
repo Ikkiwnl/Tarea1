@@ -1,3 +1,6 @@
+//El agente infiltrador:
+//Cuando el usuario dé click en la pantalla, el infiltrador se dirigirá hacia la posición del click, con un Arrive (esto es indispensable para poder comprobar al guardia). Si se da click en otra posición mientras se desplaza, debe cambiar de objetivo hacia el click más reciente.
+//Una vez que llegue a la posición del click, debe quedarse quieto hasta que se dé otro click
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,18 +8,18 @@ using UnityEngine;
 public class Infiltrador : MonoBehaviour
 {
 
-    public GameObject goObjective; //Objetivo a perseguir o evadir
+    public GameObject go_Objective; //Objetivo a perseguir o evadir
     public Rigidbody rbPlayer;
 
     public Rigidbody myRigidbody;
-
-    public float fMaxSpeed = 4f;
-    public float fArriveRadius = 2f;
-    public float fMaxForce = 6f;
+    //Variables para el movimiento
+    public float f_MaxSpeed = 4f;
+    public float f_ArriveRadius = 2f;
+    public float f_MaxForce = 6f;
 
     public Vector3 TargetPosition;
     
-
+    //Objetivo dee nuestro agente
     enum SteeringTarget { mouse }
     [SerializeField] SteeringTarget currentTarget = SteeringTarget.mouse;
 
@@ -31,6 +34,7 @@ public class Infiltrador : MonoBehaviour
     {
         switch (currentTarget)
         {
+            //Se mueve el agente a donde damos clic
             case SteeringTarget.mouse:
                 if (Input.GetMouseButtonDown(0))
                 {
@@ -40,10 +44,7 @@ public class Infiltrador : MonoBehaviour
 
             
         }
-
-        
     }
-
     
 
     private void FixedUpdate()
@@ -55,40 +56,36 @@ public class Infiltrador : MonoBehaviour
 
             
 
-
+        //Usamos el arrive para asignarlo al ultimo clic del mouse
         v3SteeringForce = Arrive(TargetPosition);
-                   //DrawGizmos
+        //DrawGizmos
 
-        myRigidbody.AddForce(v3SteeringForce, ForceMode.Acceleration);  //Aceleración ignora la masa
+        //Aceleración ignora la masa
+        myRigidbody.AddForce(v3SteeringForce, ForceMode.Acceleration);
 
         //Clamp es para que no exceda la velocidad máxima
-        myRigidbody.velocity = Vector3.ClampMagnitude(myRigidbody.velocity, fMaxSpeed);
+        myRigidbody.velocity = Vector3.ClampMagnitude(myRigidbody.velocity, f_MaxSpeed);
 
     }
 
     Vector3 Arrive(Vector3 in_v3TargetPosition)
     {
-        //Check if it's in the radius
         Vector3 v3Diff = in_v3TargetPosition - transform.position;
         float fDistance = v3Diff.magnitude;
-        float fDesiredMagnitude = fMaxSpeed;
+        float fDesiredMagnitude = f_MaxSpeed;
 
-        if (fDistance < fArriveRadius)
+        if (fDistance < f_ArriveRadius)
         {
-            //Entonces, estamos dentro del radio de desaceleración
-            //y remplazamos la magnituid deseada por una interpolación entre 0 y el radio del arrive
-            fDesiredMagnitude = Mathf.InverseLerp(0.0f, fArriveRadius, fDistance);
+
+            fDesiredMagnitude = Mathf.InverseLerp(0.0f, f_ArriveRadius, fDistance);
         }
 
-        //Else, do not deaccelerate and just do Seek normally
+
         Vector3 v3DesiredVelocity = v3Diff.normalized * fDesiredMagnitude;
 
         Vector3 v3SteeringForce = v3DesiredVelocity - myRigidbody.velocity;
 
-        //Igual aquí, haces este normalized * maxSpeed para que la magnitud de la
-        //fuerza nunca sea mayor que la maxSpeed
-
-        v3SteeringForce = Vector3.ClampMagnitude(v3SteeringForce, fMaxForce);
+        v3SteeringForce = Vector3.ClampMagnitude(v3SteeringForce, f_MaxForce);
         return v3SteeringForce;
     }
 

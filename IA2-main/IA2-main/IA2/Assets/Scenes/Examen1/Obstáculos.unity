@@ -252,15 +252,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0640211d0ca95cb48a30e455c6d22241, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  goObjective: {fileID: 0}
-  rbPlayer: {fileID: 0}
-  goObstaculo: {fileID: 0}
+  go_Objective: {fileID: 0}
+  rb_Player: {fileID: 0}
+  go_Obstaculo: {fileID: 0}
   myRigidbody: {fileID: 0}
-  fMaxSpeed: 4
-  fArriveRadius: 2
-  fMaxForce: 6
+  f_MaxSpeed: 4
+  f_ArriveRadius: 2
+  f_MaxForce: 6
   TargetPosition: {x: 0, y: 0, z: 0}
-  v3SteeringForce: {x: 0, y: 0, z: 0}
+  v3_SteeringForce: {x: 0, y: 0, z: 0}
   b_fleeing: 0
   currentTarget: 0
 --- !u!135 &809500877

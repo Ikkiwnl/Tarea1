@@ -1,21 +1,23 @@
+// Agente que se movera hacia donde se de click, si en su camino encuentra algun obstaculo tiene cambiar su ruta para no chocar, pero mantener su objetivo.
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Agent : MonoBehaviour
 {
-    // Start is called before the first frame update
-    public GameObject goObjective; //Objetivo a perseguir o evadir
-    public Rigidbody rbPlayer;
-    public GameObject goObstaculo;
+
+    //Decalracion de variables
+    public GameObject go_Objective; //Objetivo a perseguir o evadir
+    public Rigidbody rb_Player;
+    public GameObject go_Obstaculo;
 
     public Rigidbody myRigidbody;
-    public float fMaxSpeed = 4f;
-    public float fArriveRadius = 2f;
-    public float fMaxForce = 6f;
+    public float f_MaxSpeed = 4f;
+    public float f_ArriveRadius = 2f;
+    public float f_MaxForce = 6f;
 
     public Vector3 TargetPosition;
-    public Vector3 v3SteeringForce;
+    public Vector3 v3_SteeringForce;
 
     public bool b_fleeing = false;
 
@@ -31,6 +33,7 @@ public class Agent : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Hacemos que nuestra pelota se mueva a traves de clics en la pantalla
         switch (currentTarget)
         {
             case SteeringTarget.mouse:
@@ -39,98 +42,89 @@ public class Agent : MonoBehaviour
                     TargetPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 }
                 break;
-
-
         }
-
-
     }
 
-
+    //Si hace colision con un objeto activa la funcion flee
     private void OnTriggerEnter(Collider other)
     {
         b_fleeing = true;
-        goObstaculo = other.gameObject;
-        
-
+        go_Obstaculo = other.gameObject;
     }
-
+    //Si sale de nuestro alrededor desactiva flee
     private void OnTriggerExit(Collider other)
     {
 
         b_fleeing = false;
     }
-
+    //Hacemos que se mueva nuestra bolita a traves de nuestro arrive y la funcion flee
     private void FixedUpdate()
     {
-        //Vector3 TargetPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        TargetPosition.z = 0.0f;    //Le pone la z de la camara
+        
+        TargetPosition.z = 0.0f;    //Le ponemos la z de la camara
 
-        v3SteeringForce = Vector3.zero;
+        v3_SteeringForce = Vector3.zero;
 
 
         if (b_fleeing == false)
-            v3SteeringForce = Arrive(TargetPosition);
+            v3_SteeringForce = Arrive(TargetPosition);
 
         if(b_fleeing == true)
         {
-            v3SteeringForce = Arrive(TargetPosition);
-            v3SteeringForce += Flee(goObstaculo.transform.position);
+            v3_SteeringForce = Arrive(TargetPosition);
+            v3_SteeringForce += Flee(go_Obstaculo.transform.position);
         }
             
 
 
         //DrawGizmos
 
-        myRigidbody.AddForce(v3SteeringForce, ForceMode.Acceleration);  //Aceleración ignora la masa
+        myRigidbody.AddForce(v3_SteeringForce, ForceMode.Acceleration);  //Nuestra aceleracion ignorará a la masa
 
-        //Clamp es para que no exceda la velocidad máxima
-        myRigidbody.velocity = Vector3.ClampMagnitude(myRigidbody.velocity, fMaxSpeed);
+        
+        myRigidbody.velocity = Vector3.ClampMagnitude(myRigidbody.velocity, f_MaxSpeed); //Clamp para no rebasar una velocidad maxima
 
     }
 
     Vector3 Arrive(Vector3 in_v3TargetPosition)
     {
-        //Check if it's in the radius
+       
         Vector3 v3Diff = in_v3TargetPosition - transform.position;
         float fDistance = v3Diff.magnitude;
-        float fDesiredMagnitude = fMaxSpeed;
+        float fDesiredMagnitude = f_MaxSpeed;
 
-        if (fDistance < fArriveRadius)
+        if (fDistance < f_ArriveRadius)
         {
-            //Entonces, estamos dentro del radio de desaceleración
-            //y remplazamos la magnituid deseada por una interpolación entre 0 y el radio del arrive
-            fDesiredMagnitude = Mathf.InverseLerp(0.0f, fArriveRadius, fDistance);
+           
+            fDesiredMagnitude = Mathf.InverseLerp(0.0f, f_ArriveRadius, fDistance);
         }
 
-        //Else, do not deaccelerate and just do Seek normally
+      
         Vector3 v3DesiredVelocity = v3Diff.normalized * fDesiredMagnitude;
 
-        Vector3 v3SteeringForce = v3DesiredVelocity - myRigidbody.velocity;
+        Vector3 v3_SteeringForce = v3DesiredVelocity - myRigidbody.velocity;
 
-        //Igual aquí, haces este normalized * maxSpeed para que la magnitud de la
-        //fuerza nunca sea mayor que la maxSpeed
-
-        v3SteeringForce = Vector3.ClampMagnitude(v3SteeringForce, fMaxForce);
-        return v3SteeringForce;
+        
+        v3_SteeringForce = Vector3.ClampMagnitude(v3_SteeringForce, f_MaxForce);
+        return v3_SteeringForce;
     }
 
     public Vector3 Flee(Vector3 in_v3TargetPosition)
     {
-        //Dirección deseada es punta "a donde quiero llegar" - cola "donde estoy ahorita"
+        //Dirección deseada es punta - cola
         Vector3 v3DesiredDirection = transform.position - in_v3TargetPosition;
 
         //Normalized para que la magnitud de la fuerza nunca sea mayor que la maxSpeed
-        Vector3 v3DesiredVelocity = v3DesiredDirection.normalized * fMaxSpeed;
+        Vector3 v3DesiredVelocity = v3DesiredDirection.normalized * f_MaxSpeed;
 
-        Vector3 v3SteeringForce = v3DesiredVelocity - myRigidbody.velocity;
+        Vector3 v3_SteeringForce = v3DesiredVelocity - myRigidbody.velocity;
 
-        v3SteeringForce = Vector3.ClampMagnitude(v3SteeringForce, fMaxForce);
-        Debug.Log("hola");
+        v3_SteeringForce = Vector3.ClampMagnitude(v3_SteeringForce, f_MaxForce);
 
-        return v3SteeringForce;
+        return v3_SteeringForce;
     }
 
+    //Creamos la linea roja que nos dice la ruta de nuestra bolita
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
