@@ -24,7 +24,7 @@ Los obstáculos se pueden poner en el editor de unity, pero si los pueden poner 
 
 El agente se moverá entre N puntos en la escena (Waypoints), de manera cíclica. Los waypoints en la escena deben poderse poner y quitar durante el juego, y mostrar el orden en que el agente los visitará. Poder poner y quitar waypoints con el mouse. Al llegar cerca del waypoint actual, el agente debe cambiar al siguiente en el orden. Al visitar el "último" waypoint, debe dirigirse hacia el primero, y repetir todo el ciclo. Si ya no hay waypoints, el agente debe frenar hasta quedar quieto.
 
-3. Patrullage (Opcional, 35 puntos): Un solo agente.
+    Patrullage (Opcional, 35 puntos): Un solo agente.
 Diagrama: 1.
 
 El agente se moverá entre N puntos en la escena (Waypoints), de manera cíclica.
