@@ -22,7 +22,6 @@ El agente debe seguir un objetivo. Les recomiendo que el objetivo sea la posici�
 
 Los obstáculos se pueden poner en el editor de unity, pero si los pueden poner también durante el juego sería más interesante. El agente no puede atravesar los obstáculos (procuren ponerles colliders para que la física impida que los atraviese). El agente debe evitar chocar con los obstáculos. Para ello, cuando el obstáculo este a cierto rango/distancia apliquen un steering behavior de Flee a su agente, para que haga flee respecto a dicho obstáculo, mientras sigue con su arrive hacia el objetivo. 3. Patrullage (Opcional, 35 puntos): Un solo agente. Diagrama: 1.
 
-El agente se moverá entre N puntos en la escena (Waypoints), de manera cíclica. Los waypoints en la escena deben poderse poner y quitar durante el juego, y mostrar el orden en que el agente los visitará. Poder poner y quitar waypoints con el mouse. Al llegar cerca del waypoint actual, el agente debe cambiar al siguiente en el orden. Al visitar el "último" waypoint, debe dirigirse hacia el primero, y repetir todo el ciclo. Si ya no hay waypoints, el agente debe frenar hasta quedar quieto.
 
     Patrullage (Opcional, 35 puntos): Un solo agente.
 Diagrama: 1.
